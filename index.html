@@ -40,7 +40,7 @@
     font-size:14px;
     line-height:1.6;
   }
-  .wrap{ max-width:980px; margin:0 auto; }
+  .wrap{ max-width:1040px; margin:0 auto; }
   header{ display:flex; align-items:center; gap:14px; margin-bottom:4px; }
   .badge{
     width:40px; height:40px; flex:none;
@@ -49,27 +49,49 @@
     display:flex; align-items:center; justify-content:center;
     font-family:'Fraunces',serif; font-weight:600; font-size:16px;
   }
-  h1{
-    font-family:'Fraunces',serif; font-weight:600; font-size:24px; margin:0;
-    color:var(--forest-dark);
-  }
+  h1{ font-family:'Fraunces',serif; font-weight:600; font-size:24px; margin:0; color:var(--forest-dark); }
   .sub{ color:var(--muted); font-size:13px; margin:2px 0 0; }
   .toolbar{ display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap; margin:20px 0 14px; }
   .hint{ font-size:13px; color:var(--muted); margin:0; }
-  .actions{ display:flex; gap:8px; }
+  .actions{ display:flex; gap:8px; flex-wrap:wrap; }
   button{
     font-family:inherit; font-size:13px; cursor:pointer;
     background:var(--paper); border:1px solid var(--line); color:var(--ink);
     border-radius:8px; padding:7px 12px;
     transition: background 0.15s, transform 0.05s;
+    white-space:nowrap;
   }
   button:hover{ background:var(--sage); }
   button:active{ transform: scale(0.98); }
   .danger{ color:var(--bad-text); border-color:#E8B4AC; }
+  .saved-pill{
+    font-size:12px; color:var(--good-text); background:var(--good);
+    border-radius:999px; padding:3px 10px; display:inline-flex; align-items:center; gap:4px;
+    opacity:0; transition:opacity 0.3s;
+  }
+  .saved-pill.show{ opacity:1; }
   .alert{
     display:none; background:var(--bad); color:var(--bad-text);
     border-radius:var(--radius); padding:10px 14px; font-size:13px; margin-bottom:14px;
   }
+
+  .weekbar{ display:flex; align-items:center; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .weekbar .datefield{ display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); }
+  .weekbar input[type=date]{
+    font-family:inherit; font-size:13px; padding:5px 8px; border:1px solid var(--line);
+    border-radius:8px; background:var(--paper); color:var(--ink);
+  }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; min-width:0; }
+  .tab{
+    flex:none; font-size:13px; padding:7px 12px; border-radius:8px; border:1px solid var(--line);
+    background:var(--paper); cursor:pointer; white-space:nowrap; color:var(--ink);
+    display:flex; align-items:center; gap:8px;
+  }
+  .tab.active{ background:var(--forest); color:#fff; border-color:var(--forest); }
+  .tab .x{ opacity:0.6; }
+  .tab .x:hover{ opacity:1; }
+  .tab.active .x{ opacity:0.8; }
+
   .scroller{ overflow-x:auto; border-radius:var(--radius); }
   .grid{ display:grid; min-width:760px; background:var(--paper); border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); }
   .grid > div{ border-right:1px solid var(--line); border-bottom:1px solid var(--line); }
@@ -91,10 +113,7 @@
   .namecell .total.off{ color:var(--bad-text); }
   .namecell .removebtn{ font-size:11px; padding:3px 8px; margin-top:8px; color:var(--bad-text); border-color:#E8B4AC; }
   .cell{ padding:6px; min-height:88px; display:flex; flex-direction:column; gap:6px; background:var(--paper); }
-  .chip{
-    cursor:grab; border-radius:8px; padding:5px 8px; font-size:12px; line-height:1.35;
-    border:1px solid transparent;
-  }
+  .chip{ cursor:grab; border-radius:8px; padding:5px 8px; font-size:12px; line-height:1.35; border:1px solid transparent; }
   .chip:active{ cursor:grabbing; }
   .chip .t{ font-weight:600; }
   .chip .h{ opacity:0.8; }
@@ -104,21 +123,12 @@
   .c3{ background:var(--rose); color:var(--rose-text); }
   .c4{ background:var(--slate); color:var(--slate-text); }
   .c5{ background:var(--sand); color:var(--sand-text); }
-  .addbtn{
-    font-size:13px; padding:4px; height:26px; border-style:dashed; margin-top:auto;
-    color:var(--muted); background:transparent;
-  }
+  .addbtn{ font-size:13px; padding:4px; height:26px; border-style:dashed; margin-top:auto; color:var(--muted); background:transparent; }
   .addbtn:hover{ background:var(--sage); color:var(--forest-dark); }
-  .editor{
-    display:none; margin-top:16px; background:var(--paper); border:1px solid var(--line);
-    border-radius:var(--radius); padding:14px 16px;
-  }
+  .editor{ display:none; margin-top:16px; background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; }
   .editor .label{ font-size:13px; color:var(--muted); margin:0 0 10px; }
   .editor .row{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
-  .editor select{
-    font-size:13px; padding:5px 8px; border:1px solid var(--line); border-radius:6px;
-    font-family:inherit; background:var(--paper);
-  }
+  .editor select{ font-size:13px; padding:5px 8px; border:1px solid var(--line); border-radius:6px; font-family:inherit; background:var(--paper); }
   .editor label{ font-size:13px; display:flex; align-items:center; gap:6px; }
   .dur{ font-size:13px; font-weight:600; }
   .spacer{ margin-left:auto; }
@@ -129,10 +139,7 @@
   .cov-grid{ display:grid; min-width:760px; }
   .cov-head{ font-size:12px; font-weight:600; text-align:center; padding:6px; color:var(--forest-dark); }
   .cov-hour{ font-size:11px; color:var(--muted); text-align:right; padding:3px 8px 3px 0; line-height:22px; }
-  .cov-cell{
-    border-radius:6px; height:22px; margin:1px; display:flex; align-items:center; justify-content:center;
-    font-size:11px; font-weight:600;
-  }
+  .cov-cell{ border-radius:6px; height:22px; margin:1px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; }
   .summary{ margin-top:32px; }
   .summary-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px; }
   .stat{ background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px; }
@@ -141,6 +148,36 @@
   .stat .d{ font-size:12px; }
   .stat .d.ok{ color:var(--good-text); }
   .stat .d.off{ color:var(--bad-text); }
+
+  .month-wrap{ margin-top:32px; }
+  .month-table{ width:100%; border-collapse:collapse; background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; font-size:13px; min-width:560px; }
+  .month-table th, .month-table td{ padding:8px 10px; text-align:center; border-bottom:1px solid var(--line); border-right:1px solid var(--line); }
+  .month-table th:last-child, .month-table td:last-child{ border-right:none; }
+  .month-table tr:last-child td{ border-bottom:none; }
+  .month-table th{ background:var(--sage); color:var(--forest-dark); font-weight:600; font-size:12px; }
+  .month-table td:first-child, .month-table th:first-child{ text-align:left; font-weight:600; }
+  .month-table .ok{ color:var(--good-text); }
+  .month-table .off{ color:var(--bad-text); }
+
+  .chip.guide{ background:transparent; border:1px dashed var(--muted); color:var(--muted); }
+  .guide-cell{ padding:10px 8px; background:var(--paper); display:flex; flex-direction:column; gap:2px; }
+  .guide-cell .gname{ font-size:13px; font-weight:600; }
+  .guide-cell .gtotal{ font-size:12px; color:var(--muted); }
+
+  .cov-hour.peak{ font-weight:700; color:var(--terracotta-text); }
+  .cov-hour.peak .dot{ display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--terracotta-text); margin-left:4px; }
+  .cov-overlap-label{ font-size:11px; color:var(--muted); text-align:right; padding:6px 8px 6px 0; line-height:22px; font-weight:600; }
+  .cov-overlap-cell{ border-radius:6px; height:22px; margin:1px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; }
+
+  .pay-wrap{ margin-top:32px; }
+  .pay-table{ width:100%; border-collapse:collapse; background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; font-size:13px; min-width:520px; }
+  .pay-table th, .pay-table td{ padding:8px 10px; text-align:left; border-bottom:1px solid var(--line); }
+  .pay-table tr:last-child td{ border-bottom:none; }
+  .pay-table th{ background:var(--sage); color:var(--forest-dark); font-weight:600; font-size:12px; }
+  .pay-table select, .pay-table input{ font-size:13px; padding:4px 6px; border:1px solid var(--line); border-radius:6px; font-family:inherit; background:var(--paper); width:100px; }
+  .pay-table .total-row td{ font-weight:600; background:var(--sage); }
+  .pay-table .muted{ color:var(--muted); font-size:12px; }
+
   footer{ margin-top:40px; font-size:12px; color:var(--muted); text-align:center; }
 </style>
 </head>
@@ -152,13 +189,26 @@
       <h1>Hugo's Shift Lab</h1>
       <p class="sub">Build, drag and test the weekly roster &mdash; bakery &amp; wine bar, Berlin</p>
     </div>
+    <span class="saved-pill" id="savedPill"><i class="ti ti-check"></i> Saved</span>
   </header>
 
   <div class="toolbar">
-    <p class="hint">Click + to add a shift. Click a shift to edit or remove it. Drag a shift to move it to another day.</p>
+    <p class="hint">Click + to add a shift. Click a shift to edit or remove it. Drag a shift to move it to another day. The dashed "Guides (flex)" row is for extra peak-time support.</p>
     <div class="actions">
       <button id="addStaffBtn"><i class="ti ti-plus"></i> Add staff</button>
-      <button id="resetBtn"><i class="ti ti-refresh"></i> Reset to Hugo's plan</button>
+      <button id="resetBtn"><i class="ti ti-refresh"></i> Reset everything</button>
+    </div>
+  </div>
+
+  <div class="weekbar">
+    <div class="datefield">
+      <i class="ti ti-calendar"></i> Plan starts (Monday)
+      <input type="date" id="startDate" />
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div class="actions">
+      <button id="dupBtn" title="Copy this week into the next one"><i class="ti ti-copy"></i> Copy to next week</button>
+      <button id="addWeekBtn"><i class="ti ti-plus"></i> Add week</button>
     </div>
   </div>
 
@@ -181,11 +231,12 @@
 
   <div class="coverage-wrap">
     <div class="toolbar" style="margin-bottom:8px;">
-      <p class="hint">Staff on floor by hour. Aim for 2 or more (green) at all times.</p>
+      <p class="hint">Staff on floor by hour, this week. Aim for 2 or more (green) at all times.</p>
       <div class="legend">
         <span><span class="swatch" style="background:var(--bad);"></span>0</span>
         <span><span class="swatch" style="background:var(--warn);"></span>1</span>
         <span><span class="swatch" style="background:var(--good);"></span>2+</span>
+        <span><span class="dot" style="display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--terracotta-text);"></span> peak hour</span>
       </div>
     </div>
     <div class="scroller">
@@ -194,11 +245,25 @@
   </div>
 
   <div class="summary">
-    <p class="hint" style="margin-bottom:8px;">Weekly hours vs contract</p>
+    <p class="hint" style="margin-bottom:8px;">This week's hours vs contract</p>
     <div id="summary" class="summary-grid"></div>
   </div>
 
-  <footer>Hugo's &mdash; seit 1685 in Berlin. Internal planning tool.</footer>
+  <div class="pay-wrap">
+    <p class="hint" style="margin-bottom:8px;">Pay rates &amp; estimated weekly cost (gross, before ~20% employer contributions)</p>
+    <div class="scroller">
+      <table class="pay-table" id="payTable"></table>
+    </div>
+  </div>
+
+  <div class="month-wrap">
+    <p class="hint" style="margin-bottom:8px;">Plan overview &mdash; hours per person, all weeks</p>
+    <div class="scroller">
+      <table class="month-table" id="monthTable"></table>
+    </div>
+  </div>
+
+  <footer>Hugo's &mdash; seit 1685 in Berlin. Internal planning tool. Saved automatically in this browser.</footer>
 </div>
 
 <script>
@@ -206,6 +271,7 @@
   var DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   var COLORS = ['c0','c1','c2','c3','c4','c5'];
   var HOUR_START = 7, HOUR_END = 22;
+  var STORAGE_KEY = 'hugos-shift-lab-v2';
 
   function timeOptions(){
     var opts = [];
@@ -221,21 +287,55 @@
     n = Math.round(n*2)/2;
     return (n % 1 === 0) ? (n+'h') : (n.toFixed(1)+'h');
   }
+  function fmtDate(d){
+    return d.getDate()+' '+['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];
+  }
+  function addDays(dateStr, n){
+    var d = new Date(dateStr+'T00:00:00');
+    d.setDate(d.getDate()+n);
+    return d;
+  }
+  function toISO(d){
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
+  function nextMonday(){
+    var d = new Date();
+    var day = d.getDay();
+    var diff = (day===0) ? 1 : (8-day);
+    d.setDate(d.getDate()+diff);
+    return toISO(d);
+  }
+
+  // Known busy windows from Hugo's observed peak hours
+  var PEAKS = [[9.25,10],[13,14.5],[17.5,18]];
+  function isPeakHour(h){
+    return PEAKS.some(function(p){ return h < p[1] && (h+1) > p[0]; });
+  }
+  function weeklyCost(p, hrs){
+    if(p.salaried) return (p.salary||0) * 12/52;
+    return hrs * (p.rate||13);
+  }
+  function fmtEuro(n){
+    return '\u20AC'+Math.round(n).toLocaleString('en-US');
+  }
 
   var nextId = 1;
   function uid(){ return 's'+(nextId++); }
 
-  var staff, shifts, editingId = null;
+  var state, editingId = null, currentWeek = 0;
 
-  function defaultTemplate(){
-    staff = [
-      {id:'sofia', name:'Sofia', contract:32, color:0},
-      {id:'demi', name:'Demi', contract:36, color:1},
-      {id:'evelyn', name:'Evelyn', contract:35, color:2},
-      {id:'isaak', name:'Isaak', contract:32, color:3},
-      {id:'nha', name:'New Hire A', contract:32, color:4},
-      {id:'nhb', name:'New Hire B', contract:36, color:5}
+  function defaultStaff(){
+    return [
+      {id:'sofia', name:'Sofia', contract:32, color:0, rate:13, salaried:true, salary:2500},
+      {id:'demi', name:'Demi', contract:36, color:1, rate:13, salaried:false},
+      {id:'evelyn', name:'Evelyn', contract:35, color:2, rate:13, salaried:false},
+      {id:'isaak', name:'Isaak', contract:32, color:3, rate:13, salaried:false},
+      {id:'nha', name:'New Hire A', contract:32, color:4, rate:13, salaried:false},
+      {id:'nhb', name:'New Hire B', contract:36, color:5, rate:13, salaried:false},
+      {id:'guides', name:'Guides (flex)', contract:0, color:'guide', rate:13, salaried:false, isGuide:true}
     ];
+  }
+  function defaultShifts(){
     var raw = [
       ['sofia',0,10,18],['sofia',1,10,18],['sofia',2,10,18],['sofia',6,9,18],
       ['demi',0,8,14],['demi',1,8,14],['demi',2,8,14],['demi',3,8,14],['demi',4,8,14],['demi',5,8,14],
@@ -244,60 +344,164 @@
       ['nha',0,14,19],['nha',1,14,19],['nha',2,14,19],['nha',3,14,21],['nha',4,14,21],
       ['nhb',1,13,18],['nhb',2,13,18],['nhb',3,9,16],['nhb',4,9,16],['nhb',5,14,21],['nhb',6,14,19]
     ];
-    shifts = raw.map(function(r){ return {id:uid(), staffId:r[0], day:r[1], start:r[2], end:r[3]}; });
+    return raw.map(function(r){ return {id:uid(), staffId:r[0], day:r[1], start:r[2], end:r[3]}; });
   }
-  defaultTemplate();
+  function defaultState(){
+    return {
+      startDate: nextMonday(),
+      staff: defaultStaff(),
+      weeks: [ { shifts: defaultShifts() } ]
+    };
+  }
 
-  function weeklyHours(staffId){
-    return shifts.filter(function(s){return s.staffId===staffId;})
+  function load(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return defaultState();
+      var parsed = JSON.parse(raw);
+      if(!parsed.staff || !parsed.weeks || !parsed.weeks.length) return defaultState();
+      var maxId = 0;
+      parsed.weeks.forEach(function(w){
+        w.shifts.forEach(function(s){
+          var n = parseInt(String(s.id).replace('s',''),10);
+          if(!isNaN(n) && n>maxId) maxId=n;
+        });
+      });
+      nextId = maxId+1;
+      // migrate: ensure pay fields exist
+      parsed.staff.forEach(function(p){
+        if(typeof p.rate!=='number') p.rate = 13;
+        if(typeof p.salaried!=='boolean') p.salaried = false;
+        if(p.salaried && typeof p.salary!=='number') p.salary = 2500;
+      });
+      // migrate: ensure a guides row exists
+      if(!parsed.staff.some(function(p){return p.isGuide;})){
+        parsed.staff.push({id:'guides', name:'Guides (flex)', contract:0, color:'guide', rate:13, salaried:false, isGuide:true});
+      }
+      return parsed;
+    }catch(e){ return defaultState(); }
+  }
+  function save(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      var pill = document.getElementById('savedPill');
+      pill.classList.add('show');
+      clearTimeout(window._savedTimer);
+      window._savedTimer = setTimeout(function(){ pill.classList.remove('show'); }, 1200);
+    }catch(e){}
+  }
+
+  state = load();
+  if(currentWeek >= state.weeks.length) currentWeek = 0;
+
+  function curShifts(){ return state.weeks[currentWeek].shifts; }
+
+  function weeklyHours(shiftsArr, staffId){
+    return shiftsArr.filter(function(s){return s.staffId===staffId;})
       .reduce(function(sum,s){return sum+(s.end-s.start);},0);
   }
 
-  function coverageGrid(){
+  function coverageGrid(shiftsArr){
     var hours = [];
     for(var h=8; h<=20; h++) hours.push(h);
     var grid = {};
     hours.forEach(function(h){
       grid[h] = DAYS.map(function(_,d){
-        return shifts.filter(function(s){ return s.day===d && s.start<=h && s.end>h; }).length;
+        return shiftsArr.filter(function(s){ return s.day===d && s.start<=h && s.end>h; }).length;
       });
     });
     return {hours:hours, grid:grid};
   }
 
   function render(){
+    renderTabs();
     renderGrid();
     renderCoverage();
     renderSummary();
+    renderPaySettings();
     renderEditor();
+    renderMonthTable();
+    save();
+  }
+
+  function renderTabs(){
+    var tabs = document.getElementById('tabs');
+    var html = '';
+    state.weeks.forEach(function(w, i){
+      var start = addDays(state.startDate, i*7);
+      var end = addDays(state.startDate, i*7+6);
+      var label = 'Week '+(i+1)+' &middot; '+fmtDate(start)+'&ndash;'+fmtDate(end);
+      html += '<div class="tab'+(i===currentWeek?' active':'')+'" data-week="'+i+'">';
+      html += '<span>'+label+'</span>';
+      if(state.weeks.length>1){
+        html += '<i class="ti ti-x x" data-remove-week="'+i+'"></i>';
+      }
+      html += '</div>';
+    });
+    tabs.innerHTML = html;
+    document.getElementById('startDate').value = state.startDate;
+
+    tabs.querySelectorAll('[data-week]').forEach(function(tab){
+      tab.addEventListener('click', function(e){
+        if(e.target.hasAttribute('data-remove-week')) return;
+        currentWeek = parseInt(tab.getAttribute('data-week'),10);
+        editingId = null;
+        render();
+      });
+    });
+    tabs.querySelectorAll('[data-remove-week]').forEach(function(x){
+      x.addEventListener('click', function(e){
+        e.stopPropagation();
+        var idx = parseInt(x.getAttribute('data-remove-week'),10);
+        if(state.weeks.length<=1) return;
+        state.weeks.splice(idx,1);
+        if(currentWeek>=state.weeks.length) currentWeek = state.weeks.length-1;
+        else if(currentWeek>idx) currentWeek--;
+        editingId = null;
+        render();
+      });
+    });
   }
 
   function renderGrid(){
+    var shiftsArr = curShifts();
     var el = document.getElementById('grid');
     el.style.gridTemplateColumns = '160px repeat(7, 1fr)';
     var html = '';
     html += '<div class="corner"></div>';
-    DAYS.forEach(function(d){ html += '<div class="colhead">'+d+'</div>'; });
+    var startD = addDays(state.startDate, currentWeek*7);
+    DAYS.forEach(function(d,i){
+      var dt = addDays(toISO(startD), i);
+      html += '<div class="colhead">'+d+'<br><span style="font-weight:400; opacity:0.7;">'+fmtDate(dt)+'</span></div>';
+    });
 
-    staff.forEach(function(p){
-      var hrs = weeklyHours(p.id);
-      var diff = Math.round((hrs-p.contract)*2)/2;
-      var okClass = Math.abs(diff)<0.5 ? 'ok' : 'off';
-      html += '<div class="namecell">';
-      html += '<input type="text" data-staff="'+p.id+'" data-field="name" value="'+p.name+'" />';
-      html += '<div class="meta">';
-      html += '<input type="number" data-staff="'+p.id+'" data-field="contract" value="'+p.contract+'" />h';
-      html += '<span class="total '+okClass+'">'+fmtHours(hrs)+'</span>';
-      html += '</div>';
-      html += '<button class="removebtn" data-remove-staff="'+p.id+'">remove</button>';
-      html += '</div>';
+    state.staff.forEach(function(p){
+      var hrs = weeklyHours(shiftsArr, p.id);
+      var colorClass = (typeof p.color === 'number') ? COLORS[p.color] : '';
+      if(p.isGuide){
+        html += '<div class="guide-cell">';
+        html += '<div class="gname">'+p.name+'</div>';
+        html += '<div class="gtotal">'+fmtHours(hrs)+' booked this week</div>';
+        html += '</div>';
+      } else {
+        var diff = Math.round((hrs-p.contract)*2)/2;
+        var okClass = Math.abs(diff)<0.5 ? 'ok' : 'off';
+        html += '<div class="namecell">';
+        html += '<input type="text" data-staff="'+p.id+'" data-field="name" value="'+p.name+'" />';
+        html += '<div class="meta">';
+        html += '<input type="number" data-staff="'+p.id+'" data-field="contract" value="'+p.contract+'" />h';
+        html += '<span class="total '+okClass+'">'+fmtHours(hrs)+'</span>';
+        html += '</div>';
+        html += '<button class="removebtn" data-remove-staff="'+p.id+'">remove</button>';
+        html += '</div>';
+      }
 
       DAYS.forEach(function(_,d){
         html += '<div class="cell" data-cell-staff="'+p.id+'" data-cell-day="'+d+'">';
-        shifts.filter(function(s){return s.staffId===p.id && s.day===d;})
+        shiftsArr.filter(function(s){return s.staffId===p.id && s.day===d;})
           .sort(function(a,b){return a.start-b.start;})
           .forEach(function(s){
-            html += '<div class="chip '+COLORS[p.color]+'" draggable="true" data-shift="'+s.id+'">';
+            html += '<div class="chip '+colorClass+(p.isGuide?' guide':'')+'" draggable="true" data-shift="'+s.id+'">';
             html += '<div class="t">'+fmtTime(s.start)+'\u2013'+fmtTime(s.end)+'</div>';
             html += '<div class="h">'+fmtHours(s.end-s.start)+'</div>';
             html += '</div>';
@@ -311,40 +515,55 @@
   }
 
   function renderCoverage(){
-    var data = coverageGrid();
+    var shiftsArr = curShifts();
+    var data = coverageGrid(shiftsArr);
     var el = document.getElementById('coverage');
     el.style.gridTemplateColumns = '48px repeat(7, 1fr)';
     var html = '';
     html += '<div></div>';
     DAYS.forEach(function(d){ html += '<div class="cov-head">'+d+'</div>'; });
     var totalGaps = 0;
+    var dayMax = DAYS.map(function(){ return 0; });
     data.hours.forEach(function(h){
-      html += '<div class="cov-hour">'+(h<10?'0':'')+h+':00</div>';
-      data.grid[h].forEach(function(count){
-        var cls, val;
+      var peak = isPeakHour(h);
+      html += '<div class="cov-hour'+(peak?' peak':'')+'">'+(h<10?'0':'')+h+':00'+(peak?'<span class="dot"></span>':'')+'</div>';
+      data.grid[h].forEach(function(count,d){
+        var cls;
         if(count===0){ cls='bad'; totalGaps++; }
         else if(count===1){ cls='warn'; }
         else { cls='good'; }
+        if(count>dayMax[d]) dayMax[d]=count;
         html += '<div class="cov-cell" style="background:var(--'+cls+'); color:var(--'+cls+'-text);">'+count+'</div>';
       });
+    });
+    // max overlap row
+    html += '<div class="cov-overlap-label">peak<br>count</div>';
+    dayMax.forEach(function(m){
+      var cls = (m<2) ? 'bad' : (m>4 ? 'warn' : 'good');
+      html += '<div class="cov-overlap-cell" style="background:var(--'+cls+'); color:var(--'+cls+'-text);">'+m+'</div>';
     });
     el.innerHTML = html;
 
     var alertBox = document.getElementById('alertBox');
-    if(totalGaps>0){
+    var overMax = dayMax.some(function(m){ return m>4; });
+    if(totalGaps>0 || overMax){
       alertBox.style.display = 'block';
-      alertBox.innerHTML = '<i class="ti ti-alert-triangle"></i> '+totalGaps+' hour'+(totalGaps===1?'':'s')+' this week with fewer than 2 staff on the floor.';
+      var msgs = [];
+      if(totalGaps>0) msgs.push(totalGaps+' hour'+(totalGaps===1?'':'s')+' with fewer than 2 staff on the floor');
+      if(overMax) msgs.push('at least one day has more than 4 people on the floor at once');
+      alertBox.innerHTML = '<i class="ti ti-alert-triangle"></i> '+msgs.join(' &middot; ')+'.';
     } else {
       alertBox.style.display = 'none';
     }
   }
 
   function renderSummary(){
+    var shiftsArr = curShifts();
     var el = document.getElementById('summary');
     var totalContract = 0, totalActual = 0;
     var html = '';
-    staff.forEach(function(p){
-      var hrs = weeklyHours(p.id);
+    state.staff.forEach(function(p){
+      var hrs = weeklyHours(shiftsArr, p.id);
       var diff = Math.round((hrs-p.contract)*2)/2;
       totalContract += p.contract;
       totalActual += hrs;
@@ -361,17 +580,102 @@
     html += '<div class="v">'+fmtHours(totalActual)+'</div>';
     html += '<div class="d" style="color:var(--muted);">contract '+fmtHours(totalContract)+'</div>';
     html += '</div>';
+
+    var totalCost = state.staff.reduce(function(sum,p){
+      return sum + weeklyCost(p, weeklyHours(shiftsArr, p.id));
+    },0);
+    html += '<div class="stat">';
+    html += '<div class="l">Est. weekly cost</div>';
+    html += '<div class="v">'+fmtEuro(totalCost)+'</div>';
+    html += '<div class="d" style="color:var(--muted);">'+fmtEuro(totalCost*1.2)+' incl. ~20% employer costs</div>';
+    html += '</div>';
+    el.innerHTML = html;
+  }
+
+  function renderPaySettings(){
+    var shiftsArr = curShifts();
+    var el = document.getElementById('payTable');
+    var html = '<thead><tr><th>Name</th><th>Pay type</th><th>Rate / Salary</th><th>This week</th></tr></thead><tbody>';
+    var total = 0;
+    state.staff.forEach(function(p){
+      var hrs = weeklyHours(shiftsArr, p.id);
+      var cost = weeklyCost(p, hrs);
+      total += cost;
+      html += '<tr>';
+      html += '<td>'+p.name+'</td>';
+      if(p.isGuide){
+        html += '<td class="muted">Hourly (flex)</td>';
+        html += '<td><input type="number" step="0.5" min="0" data-pay="'+p.id+'" data-payfield="rate" value="'+p.rate+'" /> &euro;/h</td>';
+      } else {
+        html += '<td><select data-pay="'+p.id+'" data-payfield="salaried">';
+        html += '<option value="0"'+(!p.salaried?' selected':'')+'>Hourly</option>';
+        html += '<option value="1"'+(p.salaried?' selected':'')+'>Salaried</option>';
+        html += '</select></td>';
+        if(p.salaried){
+          html += '<td><input type="number" step="50" min="0" data-pay="'+p.id+'" data-payfield="salary" value="'+(p.salary||0)+'" /> &euro;/mo</td>';
+        } else {
+          html += '<td><input type="number" step="0.5" min="0" data-pay="'+p.id+'" data-payfield="rate" value="'+p.rate+'" /> &euro;/h</td>';
+        }
+      }
+      html += '<td>'+fmtEuro(cost)+'</td>';
+      html += '</tr>';
+    });
+    html += '<tr class="total-row"><td colspan="3">Total (gross)</td><td>'+fmtEuro(total)+'</td></tr>';
+    html += '<tr class="total-row"><td colspan="3" class="muted">Incl. ~20% employer contributions</td><td>'+fmtEuro(total*1.2)+'</td></tr>';
+    html += '</tbody>';
+    el.innerHTML = html;
+
+    el.querySelectorAll('[data-pay]').forEach(function(inp){
+      inp.addEventListener('change', function(){
+        var id = inp.getAttribute('data-pay');
+        var field = inp.getAttribute('data-payfield');
+        var p = state.staff.find(function(x){return x.id===id;});
+        if(!p) return;
+        if(field==='salaried'){
+          p.salaried = inp.value==='1';
+          if(p.salaried && typeof p.salary!=='number') p.salary = 2500;
+        } else if(field==='salary'){
+          p.salary = parseFloat(inp.value)||0;
+        } else if(field==='rate'){
+          p.rate = parseFloat(inp.value)||0;
+        }
+        render();
+      });
+    });
+  }
+
+  function renderMonthTable(){
+    var el = document.getElementById('monthTable');
+    var html = '<thead><tr><th>Name</th>';
+    state.weeks.forEach(function(w,i){ html += '<th>Wk '+(i+1)+'</th>'; });
+    html += '<th>Total</th><th>Avg/wk vs contract</th></tr></thead><tbody>';
+    state.staff.forEach(function(p){
+      var total = 0;
+      html += '<tr><td>'+p.name+'</td>';
+      state.weeks.forEach(function(w){
+        var hrs = weeklyHours(w.shifts, p.id);
+        total += hrs;
+        html += '<td>'+fmtHours(hrs)+'</td>';
+      });
+      var avg = total/state.weeks.length;
+      var diff = Math.round((avg-p.contract)*2)/2;
+      var cls = Math.abs(diff)<0.5 ? 'ok' : 'off';
+      html += '<td>'+fmtHours(total)+'</td>';
+      html += '<td class="'+cls+'">'+fmtHours(avg)+' / '+fmtHours(p.contract)+'</td>';
+      html += '</tr>';
+    });
+    html += '</tbody>';
     el.innerHTML = html;
   }
 
   function renderEditor(){
     var editor = document.getElementById('editor');
     if(!editingId){ editor.style.display='none'; return; }
-    var s = shifts.find(function(x){return x.id===editingId;});
+    var s = curShifts().find(function(x){return x.id===editingId;});
     if(!s){ editor.style.display='none'; editingId=null; return; }
-    var p = staff.find(function(x){return x.id===s.staffId;});
+    var p = state.staff.find(function(x){return x.id===s.staffId;});
     editor.style.display = 'block';
-    document.getElementById('editorLabel').textContent = (p?p.name:'')+' \u00b7 '+DAYS[s.day];
+    document.getElementById('editorLabel').textContent = (p?p.name:'')+' \u00b7 '+DAYS[s.day]+' \u00b7 Week '+(currentWeek+1);
     var opts = timeOptions();
     var startSel = document.getElementById('startSel');
     var endSel = document.getElementById('endSel');
@@ -396,7 +700,7 @@
       cell.addEventListener('drop', function(e){
         e.preventDefault();
         var id = e.dataTransfer.getData('text/plain');
-        var s = shifts.find(function(x){return x.id===id;});
+        var s = curShifts().find(function(x){return x.id===id;});
         if(!s) return;
         var staffId = cell.getAttribute('data-cell-staff');
         if(s.staffId !== staffId) return;
@@ -408,8 +712,11 @@
       btn.addEventListener('click', function(){
         var staffId = btn.getAttribute('data-add-shift');
         var day = parseInt(btn.getAttribute('data-add-day'),10);
-        var ns = {id:uid(), staffId:staffId, day:day, start:9, end:15};
-        shifts.push(ns);
+        var p = state.staff.find(function(x){return x.id===staffId;});
+        var ns = p && p.isGuide
+          ? {id:uid(), staffId:staffId, day:day, start:13, end:14.5}
+          : {id:uid(), staffId:staffId, day:day, start:9, end:15};
+        curShifts().push(ns);
         editingId = ns.id;
         render();
         document.getElementById('editor').scrollIntoView({behavior:'smooth', block:'nearest'});
@@ -419,7 +726,7 @@
       inp.addEventListener('change', function(){
         var id = inp.getAttribute('data-staff');
         var field = inp.getAttribute('data-field');
-        var p = staff.find(function(x){return x.id===id;});
+        var p = state.staff.find(function(x){return x.id===id;});
         if(!p) return;
         if(field==='contract'){ p.contract = parseFloat(inp.value)||0; }
         else { p.name = inp.value; }
@@ -429,8 +736,10 @@
     document.querySelectorAll('[data-remove-staff]').forEach(function(btn){
       btn.addEventListener('click', function(){
         var id = btn.getAttribute('data-remove-staff');
-        staff = staff.filter(function(x){return x.id!==id;});
-        shifts = shifts.filter(function(x){return x.staffId!==id;});
+        state.staff = state.staff.filter(function(x){return x.id!==id;});
+        state.weeks.forEach(function(w){
+          w.shifts = w.shifts.filter(function(x){return x.staffId!==id;});
+        });
         render();
       });
     });
@@ -438,17 +747,18 @@
 
   document.getElementById('addStaffBtn').addEventListener('click', function(){
     var id = uid();
-    staff.push({id:id, name:'New staff', contract:32, color:staff.length % COLORS.length});
+    state.staff.push({id:id, name:'New staff', contract:32, color:state.staff.length % COLORS.length});
     render();
   });
   document.getElementById('resetBtn').addEventListener('click', function(){
     editingId = null;
-    defaultTemplate();
+    currentWeek = 0;
+    state = defaultState();
     render();
   });
   document.getElementById('deleteShiftBtn').addEventListener('click', function(){
     if(!editingId) return;
-    shifts = shifts.filter(function(x){return x.id!==editingId;});
+    state.weeks[currentWeek].shifts = curShifts().filter(function(x){return x.id!==editingId;});
     editingId = null;
     render();
   });
@@ -457,18 +767,41 @@
     render();
   });
   document.getElementById('startSel').addEventListener('change', function(e){
-    var s = shifts.find(function(x){return x.id===editingId;});
+    var s = curShifts().find(function(x){return x.id===editingId;});
     if(!s) return;
     var v = parseFloat(e.target.value);
     if(v < s.end){ s.start = v; render(); }
     else { e.target.value = s.start; }
   });
   document.getElementById('endSel').addEventListener('change', function(e){
-    var s = shifts.find(function(x){return x.id===editingId;});
+    var s = curShifts().find(function(x){return x.id===editingId;});
     if(!s) return;
     var v = parseFloat(e.target.value);
     if(v > s.start){ s.end = v; render(); }
     else { e.target.value = s.end; }
+  });
+  document.getElementById('startDate').addEventListener('change', function(e){
+    state.startDate = e.target.value;
+    render();
+  });
+  document.getElementById('addWeekBtn').addEventListener('click', function(){
+    state.weeks.push({ shifts: [] });
+    currentWeek = state.weeks.length-1;
+    editingId = null;
+    render();
+  });
+  document.getElementById('dupBtn').addEventListener('click', function(){
+    var copy = curShifts().map(function(s){
+      return {id:uid(), staffId:s.staffId, day:s.day, start:s.start, end:s.end};
+    });
+    if(currentWeek+1 < state.weeks.length){
+      state.weeks[currentWeek+1].shifts = copy;
+    } else {
+      state.weeks.push({ shifts: copy });
+    }
+    currentWeek = currentWeek+1;
+    editingId = null;
+    render();
   });
 
   render();
