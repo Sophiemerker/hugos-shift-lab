@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hugo's Shift Lab</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css" />
+<style>
+  :root{
+    --cream:#F7F3EA;
+    --paper:#FFFFFF;
+    --forest:#2F4A3D;
+    --forest-dark:#1E332A;
+    --ink:#2B2820;
+    --muted:#7A7468;
+    --line:#E2DCCB;
+    --sage:#EAF1EC;
+    --sage-text:#2C4A3A;
+    --terracotta:#F3E7DC;
+    --terracotta-text:#8A5630;
+    --slate:#E8EEF5;
+    --slate-text:#3C5670;
+    --rose:#F5E9EC;
+    --rose-text:#85495A;
+    --sand:#F0EDE2;
+    --sand-text:#7A6A45;
+    --teal:#E6EEEA;
+    --teal-text:#3F6353;
+    --good:#EAF3DE; --good-text:#3B6D11;
+    --warn:#FAEEDA; --warn-text:#854F0B;
+    --bad:#FCEBEB; --bad-text:#A32D2D;
+    --radius:10px;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0; padding:24px 16px 64px;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter','Work Sans',-apple-system,sans-serif;
+    font-size:14px;
+    line-height:1.6;
+  }
+  .wrap{ max-width:980px; margin:0 auto; }
+  header{ display:flex; align-items:center; gap:14px; margin-bottom:4px; }
+  .badge{
+    width:40px; height:40px; flex:none;
+    background:var(--forest); color:#fff;
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-weight:600; font-size:16px;
+  }
+  h1{
+    font-family:'Fraunces',serif; font-weight:600; font-size:24px; margin:0;
+    color:var(--forest-dark);
+  }
+  .sub{ color:var(--muted); font-size:13px; margin:2px 0 0; }
+  .toolbar{ display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap; margin:20px 0 14px; }
+  .hint{ font-size:13px; color:var(--muted); margin:0; }
+  .actions{ display:flex; gap:8px; }
+  button{
+    font-family:inherit; font-size:13px; cursor:pointer;
+    background:var(--paper); border:1px solid var(--line); color:var(--ink);
+    border-radius:8px; padding:7px 12px;
+    transition: background 0.15s, transform 0.05s;
+  }
+  button:hover{ background:var(--sage); }
+  button:active{ transform: scale(0.98); }
+  .danger{ color:var(--bad-text); border-color:#E8B4AC; }
+  .alert{
+    display:none; background:var(--bad); color:var(--bad-text);
+    border-radius:var(--radius); padding:10px 14px; font-size:13px; margin-bottom:14px;
+  }
+  .scroller{ overflow-x:auto; border-radius:var(--radius); }
+  .grid{ display:grid; min-width:760px; background:var(--paper); border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); }
+  .grid > div{ border-right:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .grid > div:nth-child(8n){ border-right:none; }
+  .colhead{ font-size:12px; font-weight:600; text-align:center; padding:10px 4px; color:var(--forest-dark); background:var(--sage); }
+  .corner{ background:var(--sage); }
+  .namecell{ padding:10px 8px; background:var(--paper); }
+  .namecell input[type=text]{
+    font-size:13px; font-weight:600; width:100%; border:1px solid transparent; border-radius:6px;
+    padding:3px 4px; background:transparent; color:var(--ink); font-family:inherit;
+  }
+  .namecell input[type=text]:hover, .namecell input[type=text]:focus{ border-color:var(--line); background:var(--paper); }
+  .namecell .meta{ display:flex; align-items:center; gap:6px; margin-top:6px; font-size:12px; color:var(--muted); }
+  .namecell input[type=number]{
+    width:46px; font-size:12px; padding:2px 4px; border:1px solid var(--line); border-radius:6px; font-family:inherit;
+  }
+  .namecell .total{ margin-left:auto; font-weight:600; }
+  .namecell .total.ok{ color:var(--good-text); }
+  .namecell .total.off{ color:var(--bad-text); }
+  .namecell .removebtn{ font-size:11px; padding:3px 8px; margin-top:8px; color:var(--bad-text); border-color:#E8B4AC; }
+  .cell{ padding:6px; min-height:88px; display:flex; flex-direction:column; gap:6px; background:var(--paper); }
+  .chip{
+    cursor:grab; border-radius:8px; padding:5px 8px; font-size:12px; line-height:1.35;
+    border:1px solid transparent;
+  }
+  .chip:active{ cursor:grabbing; }
+  .chip .t{ font-weight:600; }
+  .chip .h{ opacity:0.8; }
+  .c0{ background:var(--sage); color:var(--sage-text); }
+  .c1{ background:var(--teal); color:var(--teal-text); }
+  .c2{ background:var(--terracotta); color:var(--terracotta-text); }
+  .c3{ background:var(--rose); color:var(--rose-text); }
+  .c4{ background:var(--slate); color:var(--slate-text); }
+  .c5{ background:var(--sand); color:var(--sand-text); }
+  .addbtn{
+    font-size:13px; padding:4px; height:26px; border-style:dashed; margin-top:auto;
+    color:var(--muted); background:transparent;
+  }
+  .addbtn:hover{ background:var(--sage); color:var(--forest-dark); }
+  .editor{
+    display:none; margin-top:16px; background:var(--paper); border:1px solid var(--line);
+    border-radius:var(--radius); padding:14px 16px;
+  }
+  .editor .label{ font-size:13px; color:var(--muted); margin:0 0 10px; }
+  .editor .row{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .editor select{
+    font-size:13px; padding:5px 8px; border:1px solid var(--line); border-radius:6px;
+    font-family:inherit; background:var(--paper);
+  }
+  .editor label{ font-size:13px; display:flex; align-items:center; gap:6px; }
+  .dur{ font-size:13px; font-weight:600; }
+  .spacer{ margin-left:auto; }
+  .coverage-wrap{ margin-top:32px; }
+  .legend{ display:flex; gap:16px; font-size:12px; color:var(--muted); }
+  .legend span{ display:inline-flex; align-items:center; gap:4px; }
+  .swatch{ display:inline-block; width:11px; height:11px; border-radius:3px; }
+  .cov-grid{ display:grid; min-width:760px; }
+  .cov-head{ font-size:12px; font-weight:600; text-align:center; padding:6px; color:var(--forest-dark); }
+  .cov-hour{ font-size:11px; color:var(--muted); text-align:right; padding:3px 8px 3px 0; line-height:22px; }
+  .cov-cell{
+    border-radius:6px; height:22px; margin:1px; display:flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:600;
+  }
+  .summary{ margin-top:32px; }
+  .summary-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px; }
+  .stat{ background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px; }
+  .stat .l{ font-size:12px; color:var(--muted); margin-bottom:2px; }
+  .stat .v{ font-family:'Fraunces',serif; font-size:22px; font-weight:600; }
+  .stat .d{ font-size:12px; }
+  .stat .d.ok{ color:var(--good-text); }
+  .stat .d.off{ color:var(--bad-text); }
+  footer{ margin-top:40px; font-size:12px; color:var(--muted); text-align:center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="badge">H</div>
+    <div>
+      <h1>Hugo's Shift Lab</h1>
+      <p class="sub">Build, drag and test the weekly roster &mdash; bakery &amp; wine bar, Berlin</p>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <p class="hint">Click + to add a shift. Click a shift to edit or remove it. Drag a shift to move it to another day.</p>
+    <div class="actions">
+      <button id="addStaffBtn"><i class="ti ti-plus"></i> Add staff</button>
+      <button id="resetBtn"><i class="ti ti-refresh"></i> Reset to Hugo's plan</button>
+    </div>
+  </div>
+
+  <div id="alertBox" class="alert"></div>
+
+  <div class="scroller">
+    <div id="grid" class="grid"></div>
+  </div>
+
+  <div id="editor" class="editor">
+    <p class="label" id="editorLabel">Editing shift</p>
+    <div class="row">
+      <label>Start <select id="startSel"></select></label>
+      <label>End <select id="endSel"></select></label>
+      <span class="dur" id="durLabel"></span>
+      <button class="danger" id="deleteShiftBtn"><i class="ti ti-trash"></i> Remove shift</button>
+      <button id="closeEditorBtn" class="spacer">Done</button>
+    </div>
+  </div>
+
+  <div class="coverage-wrap">
+    <div class="toolbar" style="margin-bottom:8px;">
+      <p class="hint">Staff on floor by hour. Aim for 2 or more (green) at all times.</p>
+      <div class="legend">
+        <span><span class="swatch" style="background:var(--bad);"></span>0</span>
+        <span><span class="swatch" style="background:var(--warn);"></span>1</span>
+        <span><span class="swatch" style="background:var(--good);"></span>2+</span>
+      </div>
+    </div>
+    <div class="scroller">
+      <div id="coverage" class="cov-grid"></div>
+    </div>
+  </div>
+
+  <div class="summary">
+    <p class="hint" style="margin-bottom:8px;">Weekly hours vs contract</p>
+    <div id="summary" class="summary-grid"></div>
+  </div>
+
+  <footer>Hugo's &mdash; seit 1685 in Berlin. Internal planning tool.</footer>
+</div>
+
+<script>
+(function(){
+  var DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  var COLORS = ['c0','c1','c2','c3','c4','c5'];
+  var HOUR_START = 7, HOUR_END = 22;
+
+  function timeOptions(){
+    var opts = [];
+    for(var h=HOUR_START; h<=HOUR_END; h+=0.5){ opts.push(h); }
+    return opts;
+  }
+  function fmtTime(t){
+    var h = Math.floor(t);
+    var m = (t % 1 === 0) ? '00' : '30';
+    return (h<10?'0':'')+h+':'+m;
+  }
+  function fmtHours(n){
+    n = Math.round(n*2)/2;
+    return (n % 1 === 0) ? (n+'h') : (n.toFixed(1)+'h');
+  }
+
+  var nextId = 1;
+  function uid(){ return 's'+(nextId++); }
+
+  var staff, shifts, editingId = null;
+
+  function defaultTemplate(){
+    staff = [
+      {id:'sofia', name:'Sofia', contract:32, color:0},
+      {id:'demi', name:'Demi', contract:36, color:1},
+      {id:'evelyn', name:'Evelyn', contract:35, color:2},
+      {id:'isaak', name:'Isaak', contract:32, color:3},
+      {id:'nha', name:'New Hire A', contract:32, color:4},
+      {id:'nhb', name:'New Hire B', contract:36, color:5}
+    ];
+    var raw = [
+      ['sofia',0,10,18],['sofia',1,10,18],['sofia',2,10,18],['sofia',6,9,18],
+      ['demi',0,8,14],['demi',1,8,14],['demi',2,8,14],['demi',3,8,14],['demi',4,8,14],['demi',5,8,14],
+      ['evelyn',0,9,16],['evelyn',1,9,16],['evelyn',2,9,16],['evelyn',5,9,16],['evelyn',6,9,16],
+      ['isaak',0,13,18],['isaak',3,13,20],['isaak',4,13,20],['isaak',5,13,20],['isaak',6,13,18],
+      ['nha',0,14,19],['nha',1,14,19],['nha',2,14,19],['nha',3,14,21],['nha',4,14,21],
+      ['nhb',1,13,18],['nhb',2,13,18],['nhb',3,9,16],['nhb',4,9,16],['nhb',5,14,21],['nhb',6,14,19]
+    ];
+    shifts = raw.map(function(r){ return {id:uid(), staffId:r[0], day:r[1], start:r[2], end:r[3]}; });
+  }
+  defaultTemplate();
+
+  function weeklyHours(staffId){
+    return shifts.filter(function(s){return s.staffId===staffId;})
+      .reduce(function(sum,s){return sum+(s.end-s.start);},0);
+  }
+
+  function coverageGrid(){
+    var hours = [];
+    for(var h=8; h<=20; h++) hours.push(h);
+    var grid = {};
+    hours.forEach(function(h){
+      grid[h] = DAYS.map(function(_,d){
+        return shifts.filter(function(s){ return s.day===d && s.start<=h && s.end>h; }).length;
+      });
+    });
+    return {hours:hours, grid:grid};
+  }
+
+  function render(){
+    renderGrid();
+    renderCoverage();
+    renderSummary();
+    renderEditor();
+  }
+
+  function renderGrid(){
+    var el = document.getElementById('grid');
+    el.style.gridTemplateColumns = '160px repeat(7, 1fr)';
+    var html = '';
+    html += '<div class="corner"></div>';
+    DAYS.forEach(function(d){ html += '<div class="colhead">'+d+'</div>'; });
+
+    staff.forEach(function(p){
+      var hrs = weeklyHours(p.id);
+      var diff = Math.round((hrs-p.contract)*2)/2;
+      var okClass = Math.abs(diff)<0.5 ? 'ok' : 'off';
+      html += '<div class="namecell">';
+      html += '<input type="text" data-staff="'+p.id+'" data-field="name" value="'+p.name+'" />';
+      html += '<div class="meta">';
+      html += '<input type="number" data-staff="'+p.id+'" data-field="contract" value="'+p.contract+'" />h';
+      html += '<span class="total '+okClass+'">'+fmtHours(hrs)+'</span>';
+      html += '</div>';
+      html += '<button class="removebtn" data-remove-staff="'+p.id+'">remove</button>';
+      html += '</div>';
+
+      DAYS.forEach(function(_,d){
+        html += '<div class="cell" data-cell-staff="'+p.id+'" data-cell-day="'+d+'">';
+        shifts.filter(function(s){return s.staffId===p.id && s.day===d;})
+          .sort(function(a,b){return a.start-b.start;})
+          .forEach(function(s){
+            html += '<div class="chip '+COLORS[p.color]+'" draggable="true" data-shift="'+s.id+'">';
+            html += '<div class="t">'+fmtTime(s.start)+'\u2013'+fmtTime(s.end)+'</div>';
+            html += '<div class="h">'+fmtHours(s.end-s.start)+'</div>';
+            html += '</div>';
+          });
+        html += '<button class="addbtn" data-add-shift="'+p.id+'" data-add-day="'+d+'"><i class="ti ti-plus"></i></button>';
+        html += '</div>';
+      });
+    });
+    el.innerHTML = html;
+    attachGridHandlers();
+  }
+
+  function renderCoverage(){
+    var data = coverageGrid();
+    var el = document.getElementById('coverage');
+    el.style.gridTemplateColumns = '48px repeat(7, 1fr)';
+    var html = '';
+    html += '<div></div>';
+    DAYS.forEach(function(d){ html += '<div class="cov-head">'+d+'</div>'; });
+    var totalGaps = 0;
+    data.hours.forEach(function(h){
+      html += '<div class="cov-hour">'+(h<10?'0':'')+h+':00</div>';
+      data.grid[h].forEach(function(count){
+        var cls, val;
+        if(count===0){ cls='bad'; totalGaps++; }
+        else if(count===1){ cls='warn'; }
+        else { cls='good'; }
+        html += '<div class="cov-cell" style="background:var(--'+cls+'); color:var(--'+cls+'-text);">'+count+'</div>';
+      });
+    });
+    el.innerHTML = html;
+
+    var alertBox = document.getElementById('alertBox');
+    if(totalGaps>0){
+      alertBox.style.display = 'block';
+      alertBox.innerHTML = '<i class="ti ti-alert-triangle"></i> '+totalGaps+' hour'+(totalGaps===1?'':'s')+' this week with fewer than 2 staff on the floor.';
+    } else {
+      alertBox.style.display = 'none';
+    }
+  }
+
+  function renderSummary(){
+    var el = document.getElementById('summary');
+    var totalContract = 0, totalActual = 0;
+    var html = '';
+    staff.forEach(function(p){
+      var hrs = weeklyHours(p.id);
+      var diff = Math.round((hrs-p.contract)*2)/2;
+      totalContract += p.contract;
+      totalActual += hrs;
+      var cls = Math.abs(diff)<0.5 ? 'ok' : 'off';
+      var diffText = diff===0 ? 'on target' : (diff>0?'+':'')+fmtHours(diff)+' vs contract';
+      html += '<div class="stat">';
+      html += '<div class="l">'+p.name+'</div>';
+      html += '<div class="v">'+fmtHours(hrs)+'</div>';
+      html += '<div class="d '+cls+'">'+diffText+'</div>';
+      html += '</div>';
+    });
+    html += '<div class="stat">';
+    html += '<div class="l">Team total</div>';
+    html += '<div class="v">'+fmtHours(totalActual)+'</div>';
+    html += '<div class="d" style="color:var(--muted);">contract '+fmtHours(totalContract)+'</div>';
+    html += '</div>';
+    el.innerHTML = html;
+  }
+
+  function renderEditor(){
+    var editor = document.getElementById('editor');
+    if(!editingId){ editor.style.display='none'; return; }
+    var s = shifts.find(function(x){return x.id===editingId;});
+    if(!s){ editor.style.display='none'; editingId=null; return; }
+    var p = staff.find(function(x){return x.id===s.staffId;});
+    editor.style.display = 'block';
+    document.getElementById('editorLabel').textContent = (p?p.name:'')+' \u00b7 '+DAYS[s.day];
+    var opts = timeOptions();
+    var startSel = document.getElementById('startSel');
+    var endSel = document.getElementById('endSel');
+    startSel.innerHTML = opts.map(function(t){return '<option value="'+t+'"'+(t===s.start?' selected':'')+'>'+fmtTime(t)+'</option>';}).join('');
+    endSel.innerHTML = opts.map(function(t){return '<option value="'+t+'"'+(t===s.end?' selected':'')+'>'+fmtTime(t)+'</option>';}).join('');
+    document.getElementById('durLabel').textContent = fmtHours(s.end-s.start);
+  }
+
+  function attachGridHandlers(){
+    document.querySelectorAll('[data-shift]').forEach(function(chip){
+      chip.addEventListener('click', function(){
+        editingId = chip.getAttribute('data-shift');
+        renderEditor();
+        document.getElementById('editor').scrollIntoView({behavior:'smooth', block:'nearest'});
+      });
+      chip.addEventListener('dragstart', function(e){
+        e.dataTransfer.setData('text/plain', chip.getAttribute('data-shift'));
+      });
+    });
+    document.querySelectorAll('[data-cell-staff]').forEach(function(cell){
+      cell.addEventListener('dragover', function(e){ e.preventDefault(); });
+      cell.addEventListener('drop', function(e){
+        e.preventDefault();
+        var id = e.dataTransfer.getData('text/plain');
+        var s = shifts.find(function(x){return x.id===id;});
+        if(!s) return;
+        var staffId = cell.getAttribute('data-cell-staff');
+        if(s.staffId !== staffId) return;
+        s.day = parseInt(cell.getAttribute('data-cell-day'),10);
+        render();
+      });
+    });
+    document.querySelectorAll('[data-add-shift]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var staffId = btn.getAttribute('data-add-shift');
+        var day = parseInt(btn.getAttribute('data-add-day'),10);
+        var ns = {id:uid(), staffId:staffId, day:day, start:9, end:15};
+        shifts.push(ns);
+        editingId = ns.id;
+        render();
+        document.getElementById('editor').scrollIntoView({behavior:'smooth', block:'nearest'});
+      });
+    });
+    document.querySelectorAll('[data-staff][data-field]').forEach(function(inp){
+      inp.addEventListener('change', function(){
+        var id = inp.getAttribute('data-staff');
+        var field = inp.getAttribute('data-field');
+        var p = staff.find(function(x){return x.id===id;});
+        if(!p) return;
+        if(field==='contract'){ p.contract = parseFloat(inp.value)||0; }
+        else { p.name = inp.value; }
+        render();
+      });
+    });
+    document.querySelectorAll('[data-remove-staff]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var id = btn.getAttribute('data-remove-staff');
+        staff = staff.filter(function(x){return x.id!==id;});
+        shifts = shifts.filter(function(x){return x.staffId!==id;});
+        render();
+      });
+    });
+  }
+
+  document.getElementById('addStaffBtn').addEventListener('click', function(){
+    var id = uid();
+    staff.push({id:id, name:'New staff', contract:32, color:staff.length % COLORS.length});
+    render();
+  });
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    editingId = null;
+    defaultTemplate();
+    render();
+  });
+  document.getElementById('deleteShiftBtn').addEventListener('click', function(){
+    if(!editingId) return;
+    shifts = shifts.filter(function(x){return x.id!==editingId;});
+    editingId = null;
+    render();
+  });
+  document.getElementById('closeEditorBtn').addEventListener('click', function(){
+    editingId = null;
+    render();
+  });
+  document.getElementById('startSel').addEventListener('change', function(e){
+    var s = shifts.find(function(x){return x.id===editingId;});
+    if(!s) return;
+    var v = parseFloat(e.target.value);
+    if(v < s.end){ s.start = v; render(); }
+    else { e.target.value = s.start; }
+  });
+  document.getElementById('endSel').addEventListener('change', function(e){
+    var s = shifts.find(function(x){return x.id===editingId;});
+    if(!s) return;
+    var v = parseFloat(e.target.value);
+    if(v > s.start){ s.end = v; render(); }
+    else { e.target.value = s.end; }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
