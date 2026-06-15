@@ -250,7 +250,7 @@
   </div>
 
   <div class="pay-wrap">
-    <p class="hint" style="margin-bottom:8px;">Pay rates &amp; estimated weekly cost (gross, before ~20% employer contributions)</p>
+    <p class="hint" style="margin-bottom:8px;">Pay rates &amp; estimated weekly cost &mdash; all figures are <strong>gross</strong> (before tax). The +20% line adds employer social contributions on top.</p>
     <div class="scroller">
       <table class="pay-table" id="payTable"></table>
     </div>
@@ -585,7 +585,7 @@
       return sum + weeklyCost(p, weeklyHours(shiftsArr, p.id));
     },0);
     html += '<div class="stat">';
-    html += '<div class="l">Est. weekly cost</div>';
+    html += '<div class="l">Est. weekly cost (gross)</div>';
     html += '<div class="v">'+fmtEuro(totalCost)+'</div>';
     html += '<div class="d" style="color:var(--muted);">'+fmtEuro(totalCost*1.2)+' incl. ~20% employer costs</div>';
     html += '</div>';
@@ -595,7 +595,7 @@
   function renderPaySettings(){
     var shiftsArr = curShifts();
     var el = document.getElementById('payTable');
-    var html = '<thead><tr><th>Name</th><th>Pay type</th><th>Rate / Salary</th><th>This week</th></tr></thead><tbody>';
+    var html = '<thead><tr><th>Name</th><th>Pay type</th><th>Rate / Salary (gross)</th><th>This week (gross)</th></tr></thead><tbody>';
     var total = 0;
     state.staff.forEach(function(p){
       var hrs = weeklyHours(shiftsArr, p.id);
